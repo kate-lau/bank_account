@@ -1,10 +1,10 @@
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeEach; // Why didn't I need this?
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class BankAccountTest {
 
-    BankAccount bankAccount = new BankAccount("Kate", "Lau", "19-07-2000", 228, 0, 12);
+    BankAccount bankAccount = new BankAccount("Kate", "Lau", "19-07-2000", 228, 0, 12, "Savings", -500);
 
 // GETTER TESTS
     @Test
@@ -73,5 +73,4 @@ public class BankAccountTest {
         int result = bankAccount.withdrawal(10);
         assertThat(result).isEqualTo(-10);
     }
-
 }

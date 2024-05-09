@@ -6,15 +6,19 @@ public class BankAccount {
     private int accountNumber;
     private int balance; // Should start at 0!
     private int accountAgeInMonths;
+    private String accountType;
+    private int overdraft;
 
     // CONSTRUCTORS
-    public BankAccount(String inputFirstName, String inputLastName, String inputDateOfBirth, int inputAccountNumber, int inputBalance, int inputAccountAgeInMonths) {
+    public BankAccount(String inputFirstName, String inputLastName, String inputDateOfBirth, int inputAccountNumber, int inputBalance, int inputAccountAgeInMonths, String inputAccountType, int inputOverdraft) {
         this.firstName = inputFirstName;
         this.lastName = inputLastName;
         this.dateOfBirth = inputDateOfBirth;
         this.accountNumber = inputAccountNumber;
         this.balance = inputBalance;
         this.accountAgeInMonths = inputAccountAgeInMonths;
+        this.accountType = inputAccountType;
+        this.overdraft = inputOverdraft;
     }
 
     // GETTERS & SETTERS
@@ -67,10 +71,27 @@ public class BankAccount {
         return balance;
     }
 
-    //    ACCOUNT AGE
+    //    ACCOUNT AGE IN MONTHS
     public int getAccountAgeInMonths() {
         return this.accountAgeInMonths;
     }
+
+    public int setAccountAgeInMonths(int accountAgeInMonths) {
+        this.accountAgeInMonths = accountAgeInMonths;
+        return accountAgeInMonths;
+    }
+
+    // ACCOUNT TYPE
+    public String getAccountType() {
+        return this.accountType;
+    }
+
+    public String setAccountType(String accountType) {
+        this.accountType = accountType;
+        return accountType;
+    }
+
+    // OVERDRAFT
 
     // METHODS
     // DEPOSIT
@@ -81,12 +102,19 @@ public class BankAccount {
 
     // WITHDRAWAL
     public int withdrawal(int withdrawalAmount) {
-        this.balance -= withdrawalAmount;
-        return this.balance;
+        if ((this.balance -= withdrawalAmount) >= this.overdraft) {
+            this.balance -= withdrawalAmount; // Why does it do it twice?
+        }
+        else;
+        return this.balance; // How to make it do nothing?
     }
-     // INTEREST
-     public int payInterest(double interestRate){
-        this.balance += (this.balance * interestRate * this.accountAgeInMonths);
-        return this.balance;
-     }
-}
+
+
+        // INTEREST - CURRENT/SAVINGS
+        public void payInterest ( double savingsInterestRate, double currentInterestRate){
+            if (this.accountType.equals("Savings")) {
+                this.balance += (int) (this.balance * savingsInterestRate * this.accountAgeInMonths);
+            } else this.balance += (int) (this.balance * currentInterestRate * this.accountAgeInMonths);
+        }
+
+    }
