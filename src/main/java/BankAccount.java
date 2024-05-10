@@ -1,24 +1,26 @@
+import java.time.LocalDate;
+
 public class BankAccount {
     // PROPERTIES
     private String firstName;
     private String lastName;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private int accountNumber;
-    private int balance; // Should start at 0!
+    private double balance; // Should start at 0!
     private int accountAgeInMonths;
     private String accountType;
     private int overdraft;
 
     // CONSTRUCTORS
-    public BankAccount(String inputFirstName, String inputLastName, String inputDateOfBirth, int inputAccountNumber, int inputBalance, int inputAccountAgeInMonths, String inputAccountType, int inputOverdraft) {
-        this.firstName = inputFirstName;
-        this.lastName = inputLastName;
-        this.dateOfBirth = inputDateOfBirth;
-        this.accountNumber = inputAccountNumber;
-        this.balance = inputBalance;
-        this.accountAgeInMonths = inputAccountAgeInMonths;
-        this.accountType = inputAccountType;
-        this.overdraft = inputOverdraft;
+    public BankAccount(String firstNameData, String lastNameData, LocalDate dateOfBirthData, int accountNumberData, int accountAgeInMonthsData, String accountTypeData, int overdraftData) {
+        this.firstName = firstNameData;
+        this.lastName = lastNameData;
+        this.dateOfBirth = dateOfBirthData;
+        this.accountNumber = accountNumberData;
+        this.balance = 0;
+        this.accountAgeInMonths = accountAgeInMonthsData;
+        this.accountType = accountTypeData;
+        this.overdraft = overdraftData;
     }
 
     // GETTERS & SETTERS
@@ -27,9 +29,8 @@ public class BankAccount {
         return this.firstName;
     }
 
-    public String setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
-        return firstName;
     }
 
     //    LAST NAME
@@ -37,17 +38,16 @@ public class BankAccount {
         return this.lastName;
     }
 
-    public String setLastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
-        return lastName;
     }
 
     //    DATE OF BIRTH
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -56,19 +56,17 @@ public class BankAccount {
         return this.accountNumber;
     }
 
-    public int setAccountNumber(int accountNumber) {
+    public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
-        return accountNumber;
     }
 
     //    BALANCE
-    public int getBalance() {
+    public double getBalance() {
         return this.balance;
     }
 
-    public int setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
-        return balance;
     }
 
     //    ACCOUNT AGE IN MONTHS
@@ -95,26 +93,30 @@ public class BankAccount {
 
     // METHODS
     // DEPOSIT
-    public int deposit(int depositAmount) {
+    public void deposit(double depositAmount) {
         this.balance += depositAmount;
-        return this.balance;
-    }
+    } // think of these as setters. That's why they're void. If you want to check you should use the getter.
 
     // WITHDRAWAL
-    public int withdrawal(int withdrawalAmount) {
-        if ((this.balance -= withdrawalAmount) >= this.overdraft) {
+    public void withdrawal(double withdrawalAmount) {
+        if ((this.balance - withdrawalAmount) >= overdraft) {
             this.balance -= withdrawalAmount; // Why does it do it twice?
-        }
-        else;
-        return this.balance; // How to make it do nothing?
+        } else ;
     }
 
 
-        // INTEREST - CURRENT/SAVINGS
-        public void payInterest ( double savingsInterestRate, double currentInterestRate){
-            if (this.accountType.equals("Savings")) {
-                this.balance += (int) (this.balance * savingsInterestRate * this.accountAgeInMonths);
-            } else this.balance += (int) (this.balance * currentInterestRate * this.accountAgeInMonths);
+    // INTEREST - CURRENT/SAVINGS
+
+    public double calculateInterest(double interestRate) {
+        return this.balance * interestRate * this.accountAgeInMonths;
+    }
+
+    public void payInterest(double savingsInterestRate, double currentInterestRate) {
+        if (accountType.equals("Savings")) {
+            this.balance += this.calculateInterest(savingsInterestRate);
+        } else if (accountType.equals("Current")) {
+            this.balance += this.calculateInterest(currentInterestRate);
         }
 
     }
+}

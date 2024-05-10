@@ -1,10 +1,18 @@
 import org.junit.jupiter.api.BeforeEach; // Why didn't I need this?
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class BankAccountTest {
 
-    BankAccount bankAccount = new BankAccount("Kate", "Lau", "19-07-2000", 228, 0, 12, "Savings", -500);
+    BankAccount bankAccount; // In this test file, we need an object of the Bank Account class, and it will be called bankAccount.
+
+    @BeforeEach
+    public void setUp(){
+        bankAccount = new BankAccount("Kate", "Lau", LocalDate.of(2000, 7, 19), 228, 12, "Savings", -50);
+    }
 
 // GETTER TESTS
     @Test
@@ -19,8 +27,8 @@ public class BankAccountTest {
     }
     @Test
     public void canGetDateOfBirth(){
-        String result = bankAccount.getDateOfBirth();
-        assertThat(result).isEqualTo("19-07-2000");
+        bankAccount.getDateOfBirth();
+        assertThat(bankAccount.getDateOfBirth()).isEqualTo("19-07-2000");
     }
     @Test
     public void canGetAccountNumber(){
@@ -29,48 +37,76 @@ public class BankAccountTest {
     }
     @Test
     public void canGetBalance(){
-        int result = bankAccount.getBalance();
+        double result = bankAccount.getBalance();
         assertThat(result).isEqualTo(0);
     }
 
 // SETTER TESTS
     @Test
     public void canSetFirstName(){
-        String result = bankAccount.setFirstName("Emilie");
-        assertThat(result).isEqualTo("Emilie");
+        bankAccount.setFirstName("Emilie");
+        assertThat(bankAccount.getFirstName()).isEqualTo("Emilie");
     }
     @Test
     public void canSetLastName(){
-        String result = bankAccount.setLastName("Cheung");
-        assertThat(result).isEqualTo("Cheung");
+        bankAccount.setLastName("Cheung");
+        assertThat(bankAccount.getLastName()).isEqualTo("Cheung");
     }
     @Test
     public void canSetDateOfBirth(){
-        String result = bankAccount.setFirstName("16-08-2000");
-        assertThat(result).isEqualTo("16-08-2000");
+        bankAccount.setDateOfBirth(LocalDate.of(2000, 8, 16));
+        assertThat(bankAccount.getDateOfBirth()).isEqualTo("2000-8-16");
     }
     @Test
     public void canSetAccountNumber(){
-        int result = bankAccount.setAccountNumber(70);
-        assertThat(result).isEqualTo(70);
+        bankAccount.setAccountNumber(70);
+        assertThat(bankAccount.getAccountNumber()).isEqualTo(70);
     }
     @Test
     public void canSetBalance(){
-        int result = bankAccount.setBalance(999);
-        assertThat(result).isEqualTo(999);
+        bankAccount.setBalance(999);
+        assertThat(bankAccount.getBalance()).isEqualTo(999);
     }
 
     // DEPOSIT TEST
     @Test
     public void canMakeDeposit(){
-        int result = bankAccount.deposit(888);
-        assertThat(result).isEqualTo(888);
+        bankAccount.deposit(888);
+        assertThat(bankAccount.getBalance()).isEqualTo(888);
     }
 
-    // WITHDRAWAL TEST
+    // WITHDRAWAL TESTS
     @Test
-    public void canMakeWithdrawal(){
-        int result = bankAccount.withdrawal(10);
-        assertThat(result).isEqualTo(-10);
+    public void canWithdraw__true(){
+        bankAccount.deposit(100);
+        bankAccount.withdrawal(10);
+        assertThat(bankAccount.getBalance()).isEqualTo(90.00);
+    }
+    @Test
+    public void canWithdraw__false(){
+        bankAccount.deposit(100);
+        bankAccount.withdrawal(200);
+        assertThat(bankAccount.getBalance()).isEqualTo(100.00);
+    }
+
+    @Test
+    public void canWithdrawalInOverdraft__true(){
+        bankAccount.deposit(100);
+        bankAccount.withdrawal(125);
+        assertThat(bankAccount.getBalance()).isEqualTo(-25.00);
+    }
+    @Test
+    public void canWithdrawalInOverdraft__false(){
+        bankAccount.deposit(100);
+        bankAccount.withdrawal(200);
+        assertThat(bankAccount.getBalance()).isEqualTo(100);
+    }
+
+    // INTEREST TEST
+    @Test
+    public void canPayInterest(){
+        bankAccount.deposit(900);
+        bankAccount.payInterest(0.05, 0.02);
+        assertThat(bankAccount.getBalance()).isEqualTo(1440.00);
     }
 }
