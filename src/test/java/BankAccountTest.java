@@ -28,7 +28,7 @@ public class BankAccountTest {
     @Test
     public void canGetDateOfBirth(){
         bankAccount.getDateOfBirth();
-        assertThat(bankAccount.getDateOfBirth()).isEqualTo("19-07-2000");
+        assertThat(bankAccount.getDateOfBirth()).isEqualTo("2000-07-19");
     }
     @Test
     public void canGetAccountNumber(){
